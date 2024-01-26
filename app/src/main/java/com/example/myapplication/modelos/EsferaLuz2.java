@@ -1,5 +1,7 @@
 package com.example.myapplication.modelos;
 
+import android.util.Log;
+
 import com.example.myapplication.utilidades.Funciones;
 
 import java.nio.FloatBuffer;
@@ -11,34 +13,38 @@ public class EsferaLuz2 {
     private FloatBuffer bufferVertices;
     private FloatBuffer bufferColores;
     private FloatBuffer bufferNormales;
-    private final static int comPorVertices = 3;
-    private final static int comPorColor = 4;
-
+    private final static int COMPVERT = 3;
+    private final static int COMPCOLO = 4;
+    private final static int COMPNORM = 4;
     private int franjas, cortes;
-    int iNormal = 0;
-    int iVertice = 0;
-    int iColor = 0;
-    float cosTheta, sinTheta;
-    float normalX, normalY, normalZ;
 
-    private float [] colores2Franjas;
-    public EsferaLuz2(int franjas, int cortes, float radio, float ejePolar, float[] colores2Franjas){
-        this.colores2Franjas = colores2Franjas;
+    public EsferaLuz2(int franjas, int cortes, float radio, float atachamiento){
 
         this.franjas = franjas;
         this.cortes = cortes;
 
         float [] vertices ;
         float [] colores;
+        float [] normales;
+
+
+        float colorIncremento = 0f;
+
+        float red = 0.5f;
+        float green = 0.5f;
+        float blue = 0.5f;
 
         int iVertice = 0;
         int iColor = 0;
+        int iNormal = 0;
 
-        vertices = new float[3 * ((cortes * 2 + 2) * franjas)];// *2 porque son dos triangulos para cada cuadrado y +2 de los vertices duplicados para los triangulos degenerados
-        colores = new float[4 * ((cortes * 2 + 2) * franjas)];
-        float[] normales = new float[3 * ((cortes * 2 + 2) * franjas)];
+        colorIncremento += 1.0 / (float)franjas;
 
-        int i, j;
+        vertices= new float[COMPVERT * ((cortes*2+2)*franjas)];
+        colores= new float[COMPCOLO * ((cortes*2+2)*franjas)];
+        normales= new float[COMPNORM * ((cortes*2+2)*franjas)];
+
+        int i,j;
 
         // Bucle para construir las franjas de la esfera
         // Latitudes
@@ -67,49 +73,43 @@ public class EsferaLuz2 {
 
                 // Dibujar la esfera en duplas, pares de puntos
                 vertices[iVertice+0] = radio * cosPhi0 * cosTheta;          //x
-                vertices[iVertice+1] = radio * (sinPhi0 * ejePolar);    //y
+                vertices[iVertice+1] = radio * (sinPhi0 * atachamiento);    //y
                 vertices[iVertice+2] = radio * (cosPhi0 * sinTheta);        //z
 
                 vertices[iVertice+3] = radio * cosPhi1 * cosTheta;          //x'
-                vertices[iVertice+4] = radio * (sinPhi1 * ejePolar);    //y'
+                vertices[iVertice+4] = radio * (sinPhi1 * atachamiento);    //y'
                 vertices[iVertice+5] = radio * (cosPhi1 * sinTheta);        //z'
 
-                // Calcular las normales
-                normalX = cosPhi0 * cosTheta;
-                normalY = sinPhi0;
-                normalZ = cosPhi0 * sinTheta;
+                normales[iNormal+0] = cosPhi0 * cosTheta;          //x
+                normales[iNormal+1] = sinPhi0;    //y
+                normales[iNormal+2] = cosPhi0 * sinTheta;        //z
 
-                // Llenar el arreglo de normales
-                normales[iNormal+0] = normalX;
-                normales[iNormal+1] = normalY;
-                normales[iNormal+2] = normalZ;
+                normales[iNormal+3] = cosPhi1 * cosTheta;          //x'
+                normales[iNormal+4] = sinPhi1;    //y'
+                normales[iNormal+5] = cosPhi1 * sinTheta;        //z'
 
-                normalX = cosPhi1 * cosTheta;
-                normalY = sinPhi1;
-                normalZ = cosPhi1 * sinTheta;
+//              colores[iColor+0] = 1.0f;colores[iColor+1] = 0.5f;colores[iColor+2] = 0.25f;colores[iColor+3] = 1.0f;
+//              colores[iColor+4] = 0.25f;colores[iColor+5] = 0.5f;colores[iColor+6] = 1.0f;colores[iColor+7] = 1.0f;
 
-                normales[iNormal+3] = normalX;
-                normales[iNormal+4] = normalY;
-                normales[iNormal+5] = normalZ;
+                colores[iColor+0] = red;
+                colores[iColor+1] = green;
+                colores[iColor+2] = blue;
+                colores[iColor+3] = 1.0f;
 
-
-//                colores[iColor+0] = 1.0f;colores[iColor+1] = 0.5f;colores[iColor+2] = 0.25f;colores[iColor+3] = 1.0f;
-//                colores[iColor+4] = 0.25f;colores[iColor+5] = 0.5f;colores[iColor+6] = 1.0f;colores[iColor+7] = 1.0f;
-                colores[iColor+0] = colores2Franjas[0];
-                colores[iColor+1] = colores2Franjas[1];
-                colores[iColor+2] = colores2Franjas[2];
-                colores[iColor+3] = colores2Franjas[3];
-
-                colores[iColor+4] = colores2Franjas[4];
-                colores[iColor+5] = colores2Franjas[5];
-                colores[iColor+6] = colores2Franjas[6];
-                colores[iColor+7] = colores2Franjas[7];
+                colores[iColor+4] = red;
+                colores[iColor+5] = green;
+                colores[iColor+6] = blue;
+                colores[iColor+7] = 1.0f;
 
 
-                iColor += 2*4;
-                iNormal += 2*3;
-                iVertice += 2*3;
+                iColor += 2*COMPCOLO;
+                iNormal += 2*COMPNORM;
+                iVertice += 2*COMPVERT;
             }
+
+            red -= colorIncremento;
+            green -= colorIncremento;
+            blue += colorIncremento;
 
             vertices[iVertice+0] = vertices[iVertice+3];
             vertices[iVertice+3] = vertices[iVertice-3];
@@ -129,18 +129,16 @@ public class EsferaLuz2 {
         gl.glFrontFace(gl.GL_CW);
 
         bufferVertices.position(0);
-        gl.glVertexPointer(comPorVertices,gl.GL_FLOAT,0,bufferVertices);
+        gl.glVertexPointer(COMPVERT,gl.GL_FLOAT,0,bufferVertices);
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY);
 
-
         bufferColores.position(0);
-        gl.glColorPointer(comPorColor,gl.GL_FLOAT,0,bufferColores);
+        gl.glColorPointer(COMPCOLO,gl.GL_FLOAT,0,bufferColores);
         gl.glEnableClientState(gl.GL_COLOR_ARRAY);
 
+        bufferNormales.position(0);
         gl.glNormalPointer(gl.GL_FLOAT,0,bufferNormales);
         gl.glEnableClientState(gl.GL_NORMAL_ARRAY);
-
-
 
         gl.glDrawArrays(gl.GL_TRIANGLE_STRIP, 0, franjas * cortes * 2);
 
