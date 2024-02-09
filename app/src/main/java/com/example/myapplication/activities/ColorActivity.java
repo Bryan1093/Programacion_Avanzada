@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.example.myapplication.renderes.CuboPushPopV1;
 import com.example.myapplication.renderes.RenderCuadradoTextura;
 import com.example.myapplication.renderes.RenderEsferaAmarilla;
+import com.example.myapplication.renderes.RenderPentagonoTextura;
 import com.example.myapplication.renderes.RenderPiramideTextura;
 import com.example.myapplication.renderes.RenderPlanoIluminacion;
 import com.example.myapplication.renderes.RenderSemaforo;
@@ -31,7 +32,7 @@ public class ColorActivity extends Activity{
         //renderer = new ColorRenderer(new float[]{150/255f,179/255f,73/255f,1f});
         //esta linea de codigo es para dibujar
         //renderer = new RendererPushPop();
-        renderer = new RenderCuadradoTextura(getApplicationContext());
+        renderer = new RenderPentagonoTextura(getApplicationContext());
         //renderer = new RenderPlanoIluminacion();
         view.setRenderer(renderer);
         setContentView(view);
