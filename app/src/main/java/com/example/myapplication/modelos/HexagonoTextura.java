@@ -8,21 +8,22 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class PentagonoTextura {
+public class HexagonoTextura {
     private FloatBuffer bufferVertices;
     private FloatBuffer bufferTexturas;
     private ByteBuffer bufferIndice;
     private final static int byteFlotante = 4;
     private final static int comPorVertices = 2;
 
-    public PentagonoTextura() {
+    public HexagonoTextura() {
         float[] vertices = {
                 0.0f, 0.0f, // Centro
                 0.5f, 0.0f, // Punto 1
                 0.3f, 0.4f, // Punto 2
                 -0.3f, 0.4f, // Punto 3
                 -0.5f, 0.0f, // Punto 4
-                0.0f, -0.2f // Punto 5
+                -0.3f, -0.4f, // Punto 5
+                0.3f, -0.4f // Punto 6
         };
 
         float[] textura = {
@@ -31,7 +32,8 @@ public class PentagonoTextura {
                 0.8f, 1.0f, // Punto 2
                 0.2f, 1.0f, // Punto 3
                 0.0f, 0.5f, // Punto 4
-                0.5f, 0.2f // Punto 5
+                0.2f, 0.0f, // Punto 5
+                0.8f, 0.0f // Punto 6
         };
 
         byte[] indices = {
@@ -39,7 +41,8 @@ public class PentagonoTextura {
                 0, 2, 3,
                 0, 3, 4,
                 0, 4, 5,
-                0, 5, 1
+                0, 5, 6,
+                0, 6, 1
         };
 
         bufferVertices = Funciones.generarBuffer(vertices);
@@ -58,7 +61,7 @@ public class PentagonoTextura {
         gl.glTexCoordPointer(2, gl.GL_FLOAT, 0, bufferTexturas);
         gl.glEnableClientState(gl.GL_TEXTURE_COORD_ARRAY);
 
-        gl.glDrawElements(gl.GL_TRIANGLES, 15, gl.GL_UNSIGNED_BYTE, bufferIndice);
+        gl.glDrawElements(gl.GL_TRIANGLES, 18, gl.GL_UNSIGNED_BYTE, bufferIndice);
 
         gl.glDisableClientState(gl.GL_VERTEX_ARRAY);
         gl.glDisableClientState(gl.GL_TEXTURE_COORD_ARRAY);

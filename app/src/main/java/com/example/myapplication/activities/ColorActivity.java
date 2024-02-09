@@ -8,14 +8,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 
-import com.example.myapplication.renderes.CuboPushPopV1;
-import com.example.myapplication.renderes.RenderCuadradoTextura;
-import com.example.myapplication.renderes.RenderEsferaAmarilla;
+import com.example.myapplication.renderes.RenderHexagonoTextura;
 import com.example.myapplication.renderes.RenderPentagonoTextura;
-import com.example.myapplication.renderes.RenderPiramideTextura;
-import com.example.myapplication.renderes.RenderPlanoIluminacion;
-import com.example.myapplication.renderes.RenderSemaforo;
-import com.example.myapplication.renderes.RendererCuboLuz;
 
 public class ColorActivity extends Activity{
 
@@ -33,6 +27,7 @@ public class ColorActivity extends Activity{
         //esta linea de codigo es para dibujar
         //renderer = new RendererPushPop();
         renderer = new RenderPentagonoTextura(getApplicationContext());
+        //renderer = new RenderHexagonoTextura(getApplicationContext());
         //renderer = new RenderPlanoIluminacion();
         view.setRenderer(renderer);
         setContentView(view);

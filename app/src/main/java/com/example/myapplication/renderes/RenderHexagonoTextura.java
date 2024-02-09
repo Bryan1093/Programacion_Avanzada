@@ -9,18 +9,17 @@ import android.opengl.GLUtils;
 import com.example.myapplication.R;
 import com.example.myapplication.modelos.CuadradoTextura;
 import com.example.myapplication.modelos.HexagonoTextura;
-import com.example.myapplication.modelos.PentagonoTextura;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
+public class RenderHexagonoTextura implements GLSurfaceView.Renderer {
     private float vIncremento;
-    private PentagonoTextura pentagonoArriba, pentagonoAbajo;
-    private CuadradoTextura lado1,lado2,lado3,lado4,lado5;
-    private int[] arrayTexturas = new int[7];//Se utilizará para almacenar las identificaciones de textura generadas por OpenGL.
+    private HexagonoTextura pentagonoArriba, pentagonoAbajo;
+    private CuadradoTextura lado1,lado2,lado3,lado4,lado5,lado6;
+    private int[] arrayTexturas = new int[8];//Se utilizará para almacenar las identificaciones de textura generadas por OpenGL.
     private Context context;
 
-    public RenderPentagonoTextura(Context context){
+    public RenderHexagonoTextura(Context context){
         this.context = context;
     }
 
@@ -32,9 +31,9 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
 
         gl.glEnable(gl.GL_TEXTURE_2D);
 
-        gl.glGenTextures(7,arrayTexturas,0);//Genera una textura en OpenGL y guarda su identificación en el array arrayTexturas.
+        gl.glGenTextures(8,arrayTexturas,0);//Genera una textura en OpenGL y guarda su identificación en el array arrayTexturas.
 
-        pentagonoArriba = new PentagonoTextura();
+        pentagonoArriba = new HexagonoTextura();
 
         Bitmap bitmap;
 
@@ -47,7 +46,7 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
         bitmap.recycle();
 
         Bitmap bitmap1;
-        pentagonoAbajo = new PentagonoTextura();
+        pentagonoAbajo = new HexagonoTextura();
 
         bitmap1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ronaldo);
         gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[1]);
@@ -111,6 +110,17 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
         gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
 
         bitmap6.recycle();
+
+        Bitmap bitmap7;
+        lado6 = new CuadradoTextura();
+
+        bitmap7 = BitmapFactory.decodeResource(context.getResources(), R.drawable.mb);
+        gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[7]);
+        GLUtils.texImage2D(gl.GL_TEXTURE_2D, 0, bitmap7, 0);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
+
+        bitmap7.recycle();
     }
 
     @Override
@@ -120,8 +130,8 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
         float right = 1.0f;
         float bottom = -1.0f / aspectRatio;
         float top = 1.0f / aspectRatio;
-        float near = 20.0f;
-        float far = 150.0f;
+        float near = 10.0f;
+        float far = 50.0f;
         gl.glViewport(0, 0, ancho, alto);//origen "x=0" y "y=0" por defecto alto y ancho de la pantalla, es practicamente la ventana de copordenas donde se va a dibujar
         gl.glMatrixMode(gl.GL_PROJECTION);
         gl.glLoadIdentity();//
@@ -130,7 +140,7 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
         gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, gl.GL_REPLACE);//Configura el modo de mezcla de textura. Aqui usado para que no se mezcle con los colores definidos en la geometria.
 
         GLU.gluLookAt(gl,
-                20, 40, 20,
+                19, 20, 19,
                 0, 0, 0,
                 0, 1, 0
         );
@@ -146,7 +156,7 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
 
         //AFECTA TODA LA ESCENA--------------------------
         gl.glTranslatef(0, 0,0);
-        gl.glRotatef(-vIncremento * 4, 1f, 0f, 0f);
+        gl.glRotatef(-vIncremento * 2, 1f, 0f, 0f);
         gl.glRotatef(-vIncremento, 0f, 1f, 0f);
         gl.glRotatef(-vIncremento, 0f, 0f, 1f);
         //-----------------------------------------------
@@ -154,8 +164,8 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
         gl.glPushMatrix(); {
 
             gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[0]);
-            gl.glTranslatef(0,-2.025f,0);
-            gl.glScalef(2,3,2);
+            gl.glTranslatef(0,-2,0);
+            gl.glScalef(2,3,3);
             gl.glRotatef(90,1,0,0);
             pentagonoAbajo.dibujar(gl);
 
@@ -164,29 +174,29 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
         gl.glPushMatrix(); {
 
             gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[1]);
-            gl.glTranslatef(0,-0.41f,0);
-            gl.glScalef(2,3,2);
+            gl.glTranslatef(0,0f,0);
+            gl.glScalef(2,3,3);
             gl.glRotatef(90,1,0,0);
-           pentagonoArriba.dibujar(gl);
+            pentagonoArriba.dibujar(gl);
 
         }gl.glPopMatrix();
 
         gl.glPushMatrix(); {
 
             gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[2]);
-            gl.glTranslatef(0.82f,-1.22f,0.39f);
-            gl.glScalef(0.46f,0.8f,0.46f);
-            gl.glRotatef(64,0,1,0);
+            gl.glTranslatef(0.8f,-1,-0.6f);
+            gl.glScalef(0.62f,1,0.62f);
+            gl.glRotatef(75,0,-1,0);
             lado1.dibujar(gl);
 
         }gl.glPopMatrix();
 
         gl.glPushMatrix(); {
 
-              gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[3]);
-            gl.glTranslatef(-0.82f,-1.22f,0.39f);
-            gl.glScalef(0.45f,0.8f,0.45f);
-            gl.glRotatef(-64,0,1,0);
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[3]);
+            gl.glTranslatef(0.8f,-1,0.6f);
+            gl.glScalef(0.62f,1,0.62f);
+            gl.glRotatef(-75,0,-1,0);
             lado2.dibujar(gl);
 
         }gl.glPopMatrix();
@@ -194,9 +204,9 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
         gl.glPushMatrix(); {
 
             gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[4]);
-            gl.glTranslatef(0.5f,-1.22f,-0.205f);
-            gl.glScalef(0.54f,0.8f,0.54f);
-            gl.glRotatef(22,0,-1,0);
+            gl.glTranslatef(-0.8f,-1,-0.6f);
+            gl.glScalef(0.62f,1,0.62f);
+            gl.glRotatef(-75,0,-1,0);
             lado3.dibujar(gl);
 
         }gl.glPopMatrix();
@@ -204,9 +214,9 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
         gl.glPushMatrix(); {
 
             gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[5]);
-            gl.glTranslatef(-0.5f,-1.22f,-0.205f);
-            gl.glScalef(0.54f,0.8f,0.54f);
-            gl.glRotatef(-22,0,-1,0);
+            gl.glTranslatef(-0.8f,-1,0.6f);
+            gl.glScalef(0.62f,1,0.62f);
+            gl.glRotatef(75,0,-1,0);
             lado4.dibujar(gl);
 
         }gl.glPopMatrix();
@@ -214,11 +224,22 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
         gl.glPushMatrix(); {
 
             gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[6]);
-            gl.glTranslatef(0f,-1.22f,0.8f);
-            gl.glScalef(0.61f,0.8f,0.61f);
+            gl.glTranslatef(0f,-1,-1.2f);
+            gl.glScalef(0.62f,1,0.62f);
             gl.glRotatef(180,0,1,0);
             lado5.dibujar(gl);
 
         }gl.glPopMatrix();
+
+        gl.glPushMatrix(); {
+
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[7]);
+            gl.glTranslatef(0f,-1,1.2f);
+            gl.glScalef(0.62f,1,0.62f);
+            gl.glRotatef(180,0,1,0);
+            lado6.dibujar(gl);
+
+        }gl.glPopMatrix();
     }
 }
+
