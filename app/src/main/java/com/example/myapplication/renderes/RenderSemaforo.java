@@ -97,6 +97,7 @@ public class RenderSemaforo implements GLSurfaceView.Renderer {
         gl.glPopMatrix();
 
         }gl.glPopMatrix();
+
         gl.glEnable(GL10.GL_LIGHTING);
 
         switch (estadoSemaforo) {
