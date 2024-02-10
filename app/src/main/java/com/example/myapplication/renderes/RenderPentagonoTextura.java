@@ -120,7 +120,7 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
         float right = 1.0f;
         float bottom = -1.0f / aspectRatio;
         float top = 1.0f / aspectRatio;
-        float near = 20.0f;
+        float near = 23.0f;
         float far = 150.0f;
         gl.glViewport(0, 0, ancho, alto);//origen "x=0" y "y=0" por defecto alto y ancho de la pantalla, es practicamente la ventana de copordenas donde se va a dibujar
         gl.glMatrixMode(gl.GL_PROJECTION);
@@ -130,7 +130,7 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
         gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, gl.GL_REPLACE);//Configura el modo de mezcla de textura. Aqui usado para que no se mezcle con los colores definidos en la geometria.
 
         GLU.gluLookAt(gl,
-                20, 40, 20,
+                -20, 20, 20,
                 0, 0, 0,
                 0, 1, 0
         );
@@ -146,8 +146,8 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
 
         //AFECTA TODA LA ESCENA--------------------------
         gl.glTranslatef(0, 0,0);
-        gl.glRotatef(-vIncremento * 4, 1f, 0f, 0f);
-        gl.glRotatef(-vIncremento, 0f, 1f, 0f);
+        gl.glRotatef(-vIncremento * 4, 0f, 1f, 0f);
+        gl.glRotatef(-vIncremento, 1f, 0f, 0f);
         gl.glRotatef(-vIncremento, 0f, 0f, 1f);
         //-----------------------------------------------
 
@@ -177,6 +177,7 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
             gl.glTranslatef(0.82f,-1.22f,0.39f);
             gl.glScalef(0.46f,0.8f,0.46f);
             gl.glRotatef(64,0,1,0);
+            gl.glRotatef(180,1,0,0);
             lado1.dibujar(gl);
 
         }gl.glPopMatrix();
@@ -187,6 +188,7 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
             gl.glTranslatef(-0.82f,-1.22f,0.39f);
             gl.glScalef(0.45f,0.8f,0.45f);
             gl.glRotatef(-64,0,1,0);
+            gl.glRotatef(180,1,0,0);
             lado2.dibujar(gl);
 
         }gl.glPopMatrix();
@@ -197,6 +199,7 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
             gl.glTranslatef(0.5f,-1.22f,-0.205f);
             gl.glScalef(0.54f,0.8f,0.54f);
             gl.glRotatef(22,0,-1,0);
+            gl.glRotatef(180,1,0,0);
             lado3.dibujar(gl);
 
         }gl.glPopMatrix();
@@ -207,6 +210,7 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
             gl.glTranslatef(-0.5f,-1.22f,-0.205f);
             gl.glScalef(0.54f,0.8f,0.54f);
             gl.glRotatef(-22,0,-1,0);
+            gl.glRotatef(180,1,0,0);
             lado4.dibujar(gl);
 
         }gl.glPopMatrix();
@@ -217,6 +221,7 @@ public class RenderPentagonoTextura implements GLSurfaceView.Renderer {
             gl.glTranslatef(0f,-1.22f,0.8f);
             gl.glScalef(0.61f,0.8f,0.61f);
             gl.glRotatef(180,0,1,0);
+            gl.glRotatef(180,1,0,0);
             lado5.dibujar(gl);
 
         }gl.glPopMatrix();
