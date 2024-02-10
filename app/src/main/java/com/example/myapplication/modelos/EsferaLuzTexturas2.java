@@ -1,7 +1,5 @@
 package com.example.myapplication.modelos;
 
-import android.util.Log;
-
 import com.example.myapplication.utilidades.Funciones;
 
 import java.nio.FloatBuffer;
@@ -9,18 +7,16 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.opengles.GL10;
 
 
-public class EsferaLuz2 {
+public class EsferaLuzTexturas2 {
     private FloatBuffer bufferVertices;
     private FloatBuffer bufferColores;
     private FloatBuffer bufferNormales;
-    private FloatBuffer bufferTexturas;
     private final static int COMPVERT = 3;
     private final static int COMPCOLO = 4;
     private final static int COMPNORM = 4;
-    private final static int COMPTEXT = 2;
     private int franjas, cortes;
 
-    public EsferaLuz2(int franjas, int cortes, float radio, float atachamiento){
+    public EsferaLuzTexturas2(int franjas, int cortes, float radio, float atachamiento){
 
         this.franjas = franjas;
         this.cortes = cortes;
@@ -28,7 +24,6 @@ public class EsferaLuz2 {
         float [] vertices ;
         float [] colores;
         float [] normales;
-        float [] texturas;
 
 
         float colorIncremento = 0f;
@@ -40,14 +35,12 @@ public class EsferaLuz2 {
         int iVertice = 0;
         int iColor = 0;
         int iNormal = 0;
-        int iTextura = 0;
 
         colorIncremento += 1.0 / (float)franjas;
 
         vertices= new float[COMPVERT * ((cortes*2+2)*franjas)];
         colores= new float[COMPCOLO * ((cortes*2+2)*franjas)];
         normales= new float[COMPNORM * ((cortes*2+2)*franjas)];
-        texturas= new float[COMPTEXT * ((cortes*2+2)*franjas)];
 
         int i,j;
 
@@ -93,11 +86,6 @@ public class EsferaLuz2 {
                 normales[iNormal+4] = sinPhi1;    //y'
                 normales[iNormal+5] = cosPhi1 * sinTheta;        //z'
 
-                texturas[iTextura+0] = j * 1.0f/(cortes-1);
-                texturas[iTextura+1] = (i + 0.0f) * 1.0f/(franjas-1);
-                texturas[iTextura+2] = j * 1.0f/(cortes-1);
-                texturas[iTextura+3] = (i + 1.0f) * 1.0f/(franjas-1);
-
 //              colores[iColor+0] = 1.0f;colores[iColor+1] = 0.5f;colores[iColor+2] = 0.25f;colores[iColor+3] = 1.0f;
 //              colores[iColor+4] = 0.25f;colores[iColor+5] = 0.5f;colores[iColor+6] = 1.0f;colores[iColor+7] = 1.0f;
 
@@ -115,7 +103,6 @@ public class EsferaLuz2 {
                 iColor += 2*COMPCOLO;
                 iNormal += 2*COMPNORM;
                 iVertice += 2*COMPVERT;
-                iTextura += 2*COMPTEXT;
             }
 
             red -= colorIncremento;
@@ -133,7 +120,6 @@ public class EsferaLuz2 {
         bufferVertices = Funciones.generarBuffer(vertices);
         bufferColores = Funciones.generarBuffer(colores);
         bufferNormales = Funciones.generarBuffer(normales);
-        bufferTexturas = Funciones.generarBuffer(texturas);
 
 
     }
@@ -152,16 +138,11 @@ public class EsferaLuz2 {
         gl.glNormalPointer(gl.GL_FLOAT,0,bufferNormales);
         gl.glEnableClientState(gl.GL_NORMAL_ARRAY);
 
-        bufferTexturas.position(0);
-        gl.glTexCoordPointer(COMPTEXT,gl.GL_FLOAT,0,bufferTexturas);
-        gl.glEnableClientState(gl.GL_TEXTURE_COORD_ARRAY);
-
         gl.glDrawArrays(gl.GL_TRIANGLE_STRIP, 0, franjas * cortes * 2);
 
         gl.glDisableClientState(gl.GL_VERTEX_ARRAY);
         gl.glDisableClientState(gl.GL_COLOR_ARRAY);
         gl.glDisableClientState(gl.GL_NORMAL_ARRAY);
-        gl.glDisableClientState(gl.GL_TEXTURE_COORD_ARRAY);
 
         gl.glFrontFace(gl.GL_CCW);
 

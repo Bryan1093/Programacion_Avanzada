@@ -8,8 +8,11 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 
+import com.example.myapplication.modelos.RenderPlanoIluminacionText;
+import com.example.myapplication.renderes.RenderEsferaText;
 import com.example.myapplication.renderes.RenderHexagonoTextura;
 import com.example.myapplication.renderes.RenderPentagonoTextura;
+import com.example.myapplication.renderes.RenderPlanoIluminacion;
 
 public class ColorActivity extends Activity{
 
@@ -26,7 +29,7 @@ public class ColorActivity extends Activity{
         //renderer = new ColorRenderer(new float[]{150/255f,179/255f,73/255f,1f});
         //esta linea de codigo es para dibujar
         //renderer = new RendererPushPop();
-        renderer = new RenderPentagonoTextura(getApplicationContext());
+        renderer = new RenderEsferaText(getApplicationContext());
         //renderer = new RenderHexagonoTextura(getApplicationContext());
         //renderer = new RenderPlanoIluminacion();
         view.setRenderer(renderer);
