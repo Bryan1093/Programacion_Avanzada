@@ -17,7 +17,7 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MyApplication"/>
-        <activity android:name=".activities.ColorActivity"
+        <activity android:name=".activities.gl10.ColorActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
