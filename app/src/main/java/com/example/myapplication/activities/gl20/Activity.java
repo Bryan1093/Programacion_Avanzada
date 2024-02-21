@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.renderes.gl10.RenderPlanoIluminacionText;
+import com.example.myapplication.renderes.gl20.CuboPushPopV20;
 
 public class Activity extends android.app.Activity {
 
@@ -18,7 +19,7 @@ public class Activity extends android.app.Activity {
 
         view = new GLSurfaceView(this);
         view.setEGLContextClientVersion(2);
-        renderer = new RenderPlanoIluminacionText(this);
+        renderer = new CuboPushPopV20(this);
         view.setRenderer(renderer);
         setContentView(view);
 

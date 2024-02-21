@@ -1,6 +1,36 @@
 package com.example.myapplication.modelos.gl20;
 
+import static android.opengl.GLES20.GL_COMPILE_STATUS;
+import static android.opengl.GLES20.GL_FLOAT;
+import static android.opengl.GLES20.GL_FRAGMENT_SHADER;
+import static android.opengl.GLES20.GL_LINK_STATUS;
+import static android.opengl.GLES20.GL_VERTEX_SHADER;
+import static android.opengl.GLES20.glAttachShader;
+import static android.opengl.GLES20.glBindAttribLocation;
+import static android.opengl.GLES20.glCompileShader;
+import static android.opengl.GLES20.glCreateProgram;
+import static android.opengl.GLES20.glCreateShader;
+import static android.opengl.GLES20.glDeleteShader;
+import static android.opengl.GLES20.glDisableVertexAttribArray;
+import static android.opengl.GLES20.glEnableVertexAttribArray;
+import static android.opengl.GLES20.glGetAttribLocation;
+import static android.opengl.GLES20.glGetProgramiv;
+import static android.opengl.GLES20.glGetShaderiv;
+import static android.opengl.GLES20.glGetUniformLocation;
+import static android.opengl.GLES20.glLinkProgram;
+import static android.opengl.GLES20.glShaderSource;
+import static android.opengl.GLES20.glUniform4f;
+import static android.opengl.GLES20.glUniform4fv;
+import static android.opengl.GLES20.glUseProgram;
+import static android.opengl.GLES20.glVertexAttribPointer;
+
+import android.content.Context;
+import android.opengl.GLES20;
+import android.util.Log;
+
+import com.example.myapplication.R;
 import com.example.myapplication.utilidades.Funciones;
+import com.example.myapplication.utilidades.Funciones20;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -16,10 +46,11 @@ public class Cubo20 {
     private FloatBuffer bufferVertices;
     private ByteBuffer bufferIndices;
     private FloatBuffer bufferColores;
+    private int idPrograma;
+    private Context contexto;
 
-
-    public Cubo20() {
-
+    public Cubo20(Context context) {
+            this.contexto = context;
 
         float[] vertices = {
                 // X     Y     Z     P    R      G     B    A
@@ -88,20 +119,20 @@ public class Cubo20 {
         /*Manejo Shaders*/
 
         //Crear source vertex shader
-        StringBuilder sourcev = new StringBuilder();
-        sourcev.append("attribute vec3 idVertice;");
-        sourcev.append("\n");
-        sourcev.append("void main() {");
-        sourcev.append("\n");
-        sourcev.append("gl_Position = idVertice;");
-        sourcev.append("\n");
-        sourcev.append("}");
+        StringBuilder sourceV = new StringBuilder();
+        sourceV.append("attribute vec3 idVertice;");
+        sourceV.append("\n");
+        sourceV.append("void main() {");
+        sourceV.append("\n");
+        sourceV.append("gl_Position = vec4(idVertice, 1);");
+        sourceV.append("\n");
+        sourceV.append("}");
 
         //Crear source fragment shader
         StringBuilder sourceF = new StringBuilder();
         sourceF.append("precision mediump float;");
         sourceF.append("\n");
-        sourceF.append("attribute vec4 color;");
+        sourceF.append("uniform vec4 color;");
         sourceF.append("\n");
         sourceF.append("void main() {");
         sourceF.append("\n");
@@ -109,31 +140,70 @@ public class Cubo20 {
         sourceF.append("\n");
         sourceF.append("}");
 
+        //Sombreador de vertice
+        int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+        int[] statusCompilation = new int[1];
+        //glShaderSource(vertexShader, String.valueOf(sourceV));
+        glShaderSource(vertexShader, Funciones20.leerArchivo(R.raw.vertex_shader, contexto));
+        glCompileShader(vertexShader);
+        glGetShaderiv(vertexShader, GL_COMPILE_STATUS, statusCompilation,0);
+        if (statusCompilation[0] == 0){
+            glDeleteShader(vertexShader);
+            Log.w("Vertex ERROR", "Se produjo un error al compilar el sombreador de vertice");
+            Log.w("Codigo: ", sourceV.toString());
+            return;
+        }
 
+        //Fragment shader
+        int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+        //glShaderSource(fragmentShader, String.valueOf(sourceF));
+        glShaderSource(fragmentShader, Funciones20.leerArchivo(R.raw.fragment_shader, contexto));
+        glCompileShader(fragmentShader);
+        glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, statusCompilation,0);
+        if (statusCompilation[0] == 0){
+            glDeleteShader(fragmentShader);
+            Log.w("Fragment ERROR", "Se produjo un error al compilar el sombreador de fragmento");
+            Log.w("Codigo: ", sourceF.toString());
+            return;
+        }
+
+        idPrograma = glCreateProgram();
+        glAttachShader(idPrograma, vertexShader);
+        glAttachShader(idPrograma, fragmentShader);
+        glLinkProgram(idPrograma);
+        int[] statusVinculation = new int[1];
+        glGetProgramiv(idPrograma, GL_LINK_STATUS, statusVinculation,0);
+        if(statusCompilation[0] == 0){
+            glDeleteShader(idPrograma);
+            Log.w("Program ERROR", "Se produjo un error al compilar el programa");
+            return;
+        }
     }
 
     public void dibujar(GL10 gl) {
-        gl.glFrontFace(gl.GL_CCW);
+        GLES20.glFrontFace(GLES20.GL_CCW);
 
-        //Definir vertices de posicion
+        glUseProgram(idPrograma);
+
         bufferVertices.position(0);
-        gl.glVertexPointer(COMPVERT, gl.GL_FLOAT, 0, bufferVertices);
-        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 
-        //Definir vertices de color
-        bufferColores.position(COMPVERT);
-        gl.glColorPointer(COMPCOLO,gl.GL_FLOAT,0,bufferColores);
-        gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
+        int idVertexShader = glGetAttribLocation(idPrograma, "idVertice");
+        glVertexAttribPointer(idVertexShader, COMPVERT, GL_FLOAT, false, 0, bufferVertices);
+        glEnableVertexAttribArray(idVertexShader);
+        glBindAttribLocation(idPrograma, 0,"idVertice");
+
+        int idFragmentShader = glGetUniformLocation(idPrograma, "color");
+        glUniform4f(idFragmentShader, 1.0f,1.0f,0.0f,1.0f);
 
         bufferIndices.position(0);
-        gl.glDrawElements(GL10.GL_TRIANGLE_FAN, 18, gl.GL_UNSIGNED_BYTE, bufferIndices);
+        GLES20.glDrawElements(GLES20.GL_TRIANGLE_FAN, 18, GLES20.GL_UNSIGNED_BYTE, bufferIndices);
 
         bufferIndices.position(18);
-        gl.glDrawElements(GL10.GL_TRIANGLE_FAN, 18, gl.GL_UNSIGNED_BYTE, bufferIndices);
+        GLES20.glDrawElements(GLES20.GL_TRIANGLE_FAN, 18, GLES20.GL_UNSIGNED_BYTE, bufferIndices);
 
 
-        gl.glDisableClientState(gl.GL_VERTEX_ARRAY);
-        gl.glFrontFace(gl.GL_CCW);
+        glDisableVertexAttribArray(idVertexShader);
+        GLES20.glFrontFace(gl.GL_CCW);
     }
 
 }

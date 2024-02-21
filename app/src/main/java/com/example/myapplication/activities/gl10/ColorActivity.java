@@ -26,7 +26,7 @@ public class ColorActivity extends Activity{
         //esta linea de codigo es para dibujar
         //renderer = new RendererPushPop();
         //renderer = new RenderEsferaText(getApplicationContext());
-        renderer = new RenderPlanoIluminacionText(this);
+        //renderer = new RenderPlanoIluminacionText(this);
         //renderer = new RenderHexagonoTextura(getApplicationContext());
         //renderer = new RenderPlanoIluminacion();
         view.setRenderer(renderer);
