@@ -22,7 +22,6 @@ public class RenderPlanoIluminacion implements GLSurfaceView.Renderer {
     private PlanoIluminacion planoIluminacion2;
     private PlanoIluminacion planoIluminacion3;
     private EsferaLuz2 esferaLuz;
-    private EsferaLuz2 esfera;
     private float translacion = 0;
     private float rotacion = 0;
 

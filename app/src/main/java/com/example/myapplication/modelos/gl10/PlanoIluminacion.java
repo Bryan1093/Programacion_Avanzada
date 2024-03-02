@@ -43,8 +43,10 @@ public class PlanoIluminacion {
                 0,2,3,
         };
         float[] normales ={
-                0,1,2,
-                0,2,3
+                0,1,0,
+                0,1,0,
+                0,1,0,
+                0,1,0
 
         };
         bufferVertices = Funciones.generarBuffer(vertices);
