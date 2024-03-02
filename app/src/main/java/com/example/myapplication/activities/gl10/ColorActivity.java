@@ -8,9 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 
-import com.example.myapplication.renderes.gl10.RenderFinalBlend;
-import com.example.myapplication.renderes.gl10.RenderPlanoIluminacion;
-import com.example.myapplication.renderes.gl10.RenderPlanoIluminacionText;
+import com.example.myapplication.renderes.gl10.RendererSumativa2;
 
 public class ColorActivity extends Activity{
 
@@ -30,7 +28,7 @@ public class ColorActivity extends Activity{
         //renderer = new RenderEsferaText(getApplicationContext());
         //renderer = new RenderPlanoIluminacionText(this);
         //renderer = new RenderHexagonoTextura(getApplicationContext());
-        renderer = new RenderFinalBlend(this);
+        renderer = new RendererSumativa2(this, false);
         view.setRenderer(renderer);
         setContentView(view);
 
