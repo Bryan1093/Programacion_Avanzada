@@ -35,7 +35,7 @@ public class RendererSumativa2 implements GLSurfaceView.Renderer {
     private EsferaLuz foco;
     private Esferatextura balon;
     private Cono pista1, pista2, pista3,copa,copa2;
-    private ObjModel dona;
+    private ObjModel dona, langosta;
     private Cilindro poste, poste2, poste3, poste4;
 
     private float[] posLuz0 = {0.0f, -1.0f, -3.0f, 1.0f};
@@ -101,6 +101,7 @@ public class RendererSumativa2 implements GLSurfaceView.Renderer {
         gl.glEnable(GL10.GL_DEPTH_TEST);
 
         dona = new ObjModel("donaBlender.obj", new float[]{0.902f, 0.0706f, 0.7922f, 1}, this.context);
+        langosta = new ObjModel("langosta.obj", new float[]{1, 0f, 0f, 1}, this.context);
 
         pista1 = new Cono(5,0.2f,30,coloresCilindros[0]);
         pista2 = new Cono(3.5f,0.2f,30,coloresCilindros[0]);
@@ -363,7 +364,7 @@ public class RendererSumativa2 implements GLSurfaceView.Renderer {
         {//Plano1
             spotDir1 = new float[]{-1, 0, 0};
             gl.glLightfv(LUZ1, gl.GL_SPOT_DIRECTION, FloatBuffer.wrap(spotDir1));
-            gl.glLightf(LUZ1, gl.GL_SPOT_CUTOFF, 10);
+            gl.glLightf(LUZ1, gl.GL_SPOT_CUTOFF, 00);
             gl.glLightf(LUZ1, gl.GL_SPOT_EXPONENT, 1);
             gl.glMaterialfv(gl.GL_FRONT_AND_BACK, gl.GL_AMBIENT, materialAmarillo, 0); //ambiental todo
             gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorAmarillo));
@@ -419,9 +420,24 @@ public class RendererSumativa2 implements GLSurfaceView.Renderer {
         {
             gl.glRotatef(-rotacion, 0, 1, 0);
 
-            gl.glMaterialfv(gl.GL_FRONT_AND_BACK, gl.GL_AMBIENT, materialRosado, 0);
+            gl.glMaterialfv(gl.GL_FRONT_AND_BACK, gl.GL_AMBIENT, materialAzul, 0);
+            gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorAzul));
+            gl.glTranslatef(0.8f, -1.8f, 0f);
+            gl.glScalef(0.07f,0.07f,0.07f);
+            gl.glRotatef(90, 1, 0, 0);
+            gl.glRotatef(90, 0, 0, 1);
+            gl.glRotatef(180, 0, 1, 0);
+            langosta.dibujar(gl);
+        }
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        {
+            gl.glRotatef(-rotacion, 0, 1, 0);
+
+            gl.glMaterialfv(gl.GL_FRONT_AND_BACK, gl.GL_AMBIENT, materialRosado, 0); //ambiental todo
             gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorRosado));
-            gl.glTranslatef(0.8f, -1.4f, 0f);
+            gl.glTranslatef(-0.8f, -1.6f, 0f);
             gl.glScalef(0.2f,0.1f,0.2f);
             dona.dibujar(gl);
         }
