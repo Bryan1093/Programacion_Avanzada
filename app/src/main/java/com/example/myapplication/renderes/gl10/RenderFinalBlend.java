@@ -9,6 +9,7 @@ import android.opengl.GLU;
 import android.opengl.GLUtils;
 
 import com.example.myapplication.R;
+import com.example.myapplication.modelos.gl10.CuboTextura;
 import com.example.myapplication.modelos.gl10.Esferatextura;
 import com.example.myapplication.modelos.gl10.ObjModel;
 import com.example.myapplication.modelos.gl10.PlanoTextura;
@@ -26,12 +27,11 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
     private float translacion = 0;
     private final static int LUZ0 = GL_LIGHT0;
     private final static int LUZ1 = GL_LIGHT0;
-    private PlanoTextura plano;
+    private PlanoTextura plano,sup, inf, fre, atr, der, izq,tv, planoAbajo;
     private Esferatextura balon;
     private PlanoIluminacion planoIluminacion;
     private PlanoIluminacion planoIluminacion2;
     private PlanoIluminacion planoIluminacion3;
-    private PlanoTexturizado planetas;
     private ObjModel dona;
 
 
@@ -39,7 +39,7 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
     private float densidadnieblibna = 0.0f;
 
     private float[] posLuz0 = {0.0f, -1.0f, -3.0f, 1.0f};
-    private float[] colorBlanco = {1.0f, 1.0f, 1.0f, 1.0f};
+    private float[] colorBlanco = {0.8f, 0.8f, 0.8f, 1.0f};
     private float[] colorRojo = {1.0f, 0.0f, 0.0f, 1.0f};
     private float[] colorVerde = {0.0f, 1.0f, 0.0f, 1.0f};
     private float[] colorAzul = {0.0f, 0.0f, 1.0f, 1.0f};
@@ -62,7 +62,7 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
     private float[] spotDirection;
     private float[] spotExponent;
     private float[] spotCutoff;
-    private int[] arrayTexturas = new int[2];//Identificadores de texturas
+    private int[] arrayTexturas = new int[10];
     private Context context;
     private BitmapFactory.Options options;
     private float incremento = -0.1f, distancia = -2.0f;
@@ -90,7 +90,7 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
         gl.glLightfv(LUZ1, gl.GL_POSITION, Funciones.generarBuffer(posLu1));
 
 
-        gl.glGenTextures(2, arrayTexturas, 0);
+        gl.glGenTextures(10, arrayTexturas, 0);
 
         Bitmap bitmap2;
         balon = new Esferatextura(30,30,1,1);
@@ -106,13 +106,101 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
         Bitmap bitmap;
         plano = new PlanoTextura();
 
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.albion);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.piso);
         gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[1]);
         GLUtils.texImage2D(gl.GL_TEXTURE_2D, 0, bitmap, 0);
         gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
         gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
 
         bitmap.recycle();
+
+        Bitmap bitmap3;
+        sup = new PlanoTextura();
+
+        bitmap3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.madera);
+        gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[2]);
+        GLUtils.texImage2D(gl.GL_TEXTURE_2D, 0, bitmap3, 0);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
+
+        bitmap3.recycle();
+
+        Bitmap bitmap4;
+        inf = new PlanoTextura();
+
+        bitmap4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.madera);
+        gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[3]);
+        GLUtils.texImage2D(gl.GL_TEXTURE_2D, 0, bitmap4, 0);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
+
+        bitmap4.recycle();
+
+        Bitmap bitmap5;
+        atr = new PlanoTextura();
+
+        bitmap5 = BitmapFactory.decodeResource(context.getResources(), R.drawable.madera);
+        gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[4]);
+        GLUtils.texImage2D(gl.GL_TEXTURE_2D, 0, bitmap5, 0);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
+
+        bitmap5.recycle();
+
+        Bitmap bitmap6;
+        fre = new PlanoTextura();
+
+        bitmap6 = BitmapFactory.decodeResource(context.getResources(), R.drawable.madera);
+        gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[5]);
+        GLUtils.texImage2D(gl.GL_TEXTURE_2D, 0, bitmap6, 0);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
+
+        bitmap6.recycle();
+
+        Bitmap bitmap7;
+        der = new PlanoTextura();
+
+        bitmap7 = BitmapFactory.decodeResource(context.getResources(), R.drawable.madera);
+        gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[6]);
+        GLUtils.texImage2D(gl.GL_TEXTURE_2D, 0, bitmap7, 0);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
+
+        bitmap7.recycle();
+
+        Bitmap bitmap8;
+        izq = new PlanoTextura();
+
+        bitmap8 = BitmapFactory.decodeResource(context.getResources(), R.drawable.madera);
+        gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[7]);
+        GLUtils.texImage2D(gl.GL_TEXTURE_2D, 0, bitmap8, 0);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
+
+        bitmap8.recycle();
+
+        Bitmap bitmap9;
+        tv = new PlanoTextura();
+
+        bitmap9 = BitmapFactory.decodeResource(context.getResources(), R.drawable.tv);
+        gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[8]);
+        GLUtils.texImage2D(gl.GL_TEXTURE_2D, 0, bitmap9, 0);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
+
+        bitmap9.recycle();
+
+        Bitmap bitmap10;
+        planoAbajo = new PlanoTextura();
+
+        bitmap10 = BitmapFactory.decodeResource(context.getResources(), R.drawable.piso);
+        gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[9]);
+        GLUtils.texImage2D(gl.GL_TEXTURE_2D, 0, bitmap10, 0);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
+        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
+
+        bitmap10.recycle();
 /*
         //nieblita
         gl.glFogfv(gl.GL_FOG_COLOR, FloatBuffer.wrap(colorBlanco));
@@ -135,11 +223,11 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
         gl.glViewport(0, 0, ancho, alto);
         gl.glMatrixMode(gl.GL_PROJECTION);
         gl.glLoadIdentity();
-        gl.glFrustumf(-1.0f, 1, bottom, top, 1f, 50.0f);
+        gl.glFrustumf(-1.0f, 1, bottom, top, 0.6f, 200.0f);
         gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, gl.GL_REPLACE);
 
         GLU.gluLookAt(gl,
-                0, 0, 2, //Posicion de la camara
+                0f, 0f, 2, //Posicion de la camara
                 0, 0, 0, //a donde mira la camara
                 0, 1, 0 //que eje se considera arriba para la camara
         );
@@ -218,26 +306,36 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
 
         gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorAmbient));
           gl.glLightfv(LUZ0, gl.GL_POSITION, Funciones.generarBuffer(posicion));
-/*
-        //TODA LA ESCENA--------------------------------------------------
-        gl.glRotatef(vIncremento * 2, 0f, 1, 0);
-        //----------------------------------------------------------------
 
- */
+        //TODA LA ESCENA--------------------------------------------------
+        gl.glRotatef(vIncremento * 2, 0f, 1, 0);//vincremento estaba en 2
+        //----------------------------------------------------------------
 
         gl.glEnable(LUZ0);
 
         //AFECTA A TODA LA ESCENA>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         gl.glScalef(1.0f, 1.0f, 1.0f);
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        gl.glPushMatrix();//Plano Abajo
-        gl.glMaterialfv(gl.GL_FRONT_AND_BACK, gl.GL_AMBIENT,materialBlanco,0); //ambiental todo
+
+        gl.glPushMatrix();//Plano INFERIOR
+        /*gl.glMaterialfv(gl.GL_FRONT_AND_BACK, gl.GL_AMBIENT,materialBlanco,0); //ambiental todo
         //   gl.glMaterialfv(gl.GL_FRONT_AND_BACK, gl.GL_DIFFUSE,materialVerde,0);
          //  gl.glMaterialfv(gl.GL_FRONT_AND_BACK, gl.GL_SPECULAR,materialVerde,0);
         //   gl.glMaterialf(gl.GL_FRONT_AND_BACK, gl.GL_SHININESS, (float) (60*Math.sin(vIncremento)));
         gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorAzul));
-        gl.glLightfv(LUZ1, gl.GL_POSITION, Funciones.generarBuffer(posicion));
-        planoIluminacion.dibujar(gl);
+        gl.glLightfv(LUZ1, gl.GL_POSITION, Funciones.generarBuffer(posicion));*/
+
+        gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorBlanco));
+        gl.glLightfv(LUZ1, gl.GL_POSITION, Funciones.generarBuffer(posicion2));
+        gl.glTranslatef(0,-2f,0);
+        gl.glRotatef(180, 1, 0, 0);
+        //planoIluminacion.dibujar(gl);
+
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[9]); // Textura para la cara 1
+        gl.glTranslatef(0,-1,0);
+        gl.glRotatef(270,1,0,0);
+        planoAbajo.dibujar(gl); // Dibujar la cara
+
         gl.glPopMatrix();
 
         gl.glPushMatrix();//PLANO2 ATRAS
@@ -252,10 +350,11 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
             //gl.glEnable(gl.GL_BLEND);
             //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
 
-        planoIluminacion2.dibujar(gl);
+                planoIluminacion2.dibujar(gl);
 
                 //Aqui es para hacer un planoTextura
                 gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[1]); // Textura para la cara 1
+                gl.glTranslatef(0,-1,0);
                 gl.glRotatef(270, 1, 0, 0); // Orientar correctamente
                 //plano.dibujar(gl); // Dibujar la cara
 
@@ -274,30 +373,142 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
         gl.glPushMatrix();
 
         gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[0]);
-        gl.glTranslatef(0f, 0f, 0);
-        gl.glScalef(0.5f, 0.5f, 0.5f);
+        gl.glTranslatef(0f, -0.1f, 0.05f);
+        gl.glScalef(0.3f, 0.3f, 0.3f);
         gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorBlanco));
         gl.glLightfv(LUZ1, gl.GL_POSITION, Funciones.generarBuffer(posicionTierra));
         gl.glRotatef(rotacion,0,1,0);
         //gl.glDisable(gl.GL_BLEND);
         //gl.glEnable(gl.GL_BLEND);
         //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
-        //astro.dibujar(gl);
+        balon.dibujar(gl);
         gl.glPopMatrix();
 
         gl.glPushMatrix();
         {
             gl.glTranslatef(0, 0f, 0);
-            gl.glScalef(0.3f,0.3f,0.2f);
-            gl.glRotatef(rotacion,1,0,0);
+            gl.glScalef(0.1f,0.1f,0.2f);
+            //gl.glRotatef(rotacion,1,0,0);
             //gl.glDisable(gl.GL_BLEND);
             //gl.glEnable(gl.GL_BLEND);
             //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
-            dona.dibujar(gl);
+            //dona.dibujar(gl);
+        }
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        {
+
+            //TODO EL CUADRADO--------------------------------------------------
+            gl.glTranslatef(0,-0.7f,0);
+            gl.glScalef(1.2f,1.2f,1.2f);
+            //gl.glRotatef(vIncremento * 2, 0f, 1, 0);
+            //----------------------------------------------------------------
+
+        gl.glPushMatrix();
+        {
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[2]);
+            gl.glTranslatef(0, 0.2f, 0.05f);
+            gl.glScalef(0.2f,0.05f,0.2f);
+            gl.glRotatef(270,1,0,0);
+            //gl.glDisable(gl.GL_BLEND);
+            //gl.glEnable(gl.GL_BLEND);
+            //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
+            sup.dibujar(gl);
+        }
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        {
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[3]);
+            gl.glTranslatef(0, -0.2f, 0.05f);
+            gl.glScalef(0.2f,0.05f,0.2f);
+            gl.glRotatef(270,1,0,0);
+            //gl.glDisable(gl.GL_BLEND);
+            //gl.glEnable(gl.GL_BLEND);
+            //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
+            inf.dibujar(gl);
+        }
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        {
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[4]);
+            gl.glTranslatef(0, 0f, -0.15f);
+            gl.glScalef(0.2f,0.2f,0.05f);
+            //gl.glDisable(gl.GL_BLEND);
+            //gl.glEnable(gl.GL_BLEND);
+            //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
+            atr.dibujar(gl);
+        }
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        {
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[5]);
+            gl.glTranslatef(0, 0f, 0.25f);
+            gl.glScalef(0.2f,0.2f,0.05f);
+            //gl.glDisable(gl.GL_BLEND);
+            //gl.glEnable(gl.GL_BLEND);
+            //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
+            fre.dibujar(gl);
+        }
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        {
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[6]);
+            gl.glTranslatef(0.20f, 0f, 0.05f);
+            gl.glScalef(0.05f,0.2f,0.2f);
+            gl.glRotatef(270,0,1,0);
+            //gl.glDisable(gl.GL_BLEND);
+            //gl.glEnable(gl.GL_BLEND);
+            //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
+            der.dibujar(gl);
+        }
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        {
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[7]);
+            gl.glTranslatef(-0.2f, 0f, 0.05f);
+            gl.glScalef(0.05f,0.2f,0.2f);
+            gl.glRotatef(270,0,1,0);
+            //gl.glDisable(gl.GL_BLEND);
+            //gl.glEnable(gl.GL_BLEND);
+            //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
+            izq.dibujar(gl);
+        }
+        gl.glPopMatrix();
+
+        }
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        {
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[8]);
+            gl.glTranslatef(0, 0f, -0.99f);
+            gl.glScalef(0.7f,0.4f,0.1f);
+            //gl.glDisable(gl.GL_BLEND);
+            //gl.glEnable(gl.GL_BLEND);
+            //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
+            tv.dibujar(gl);
+        }
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        {
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[8]);
+            gl.glTranslatef(0, 0f, -0.99f);
+            gl.glScalef(0.7f,0.4f,0.1f);
+            //gl.glDisable(gl.GL_BLEND);
+            //gl.glEnable(gl.GL_BLEND);
+            //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
+            //tv.dibujar(gl);
         }
         gl.glPopMatrix();
 
         rotacion += 0.9f;
-        translacion += 0.01f;
+        translacion += 0.05f;
     }
 }
