@@ -9,7 +9,7 @@ import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 
 import com.example.myapplication.R;
-import com.example.myapplication.modelos.gl10.EsferaLuz2;
+import com.example.myapplication.modelos.gl10.Esferatextura;
 import com.example.myapplication.modelos.gl10.PlanoIluminacion;
 import com.example.myapplication.modelos.gl10.PlanoTexturizado;
 import com.example.myapplication.utilidades.Funciones;
@@ -26,7 +26,7 @@ public class RenderPlanoIluminacionText implements GLSurfaceView.Renderer {
     private PlanoIluminacion planoIluminacion;
     private PlanoTexturizado planoIluminacion2;
     private PlanoIluminacion planoIluminacion3;
-    private EsferaLuz2 esferaLuz;
+    private Esferatextura esferaLuz;
     private float translacion = 0;
     private float rotacion = 0;
     private float incrementoDensidad= 0.1f;
@@ -72,7 +72,7 @@ public class RenderPlanoIluminacionText implements GLSurfaceView.Renderer {
         gl.glEnable(GL10.GL_DEPTH_TEST);
 
         planoIluminacion2 = new PlanoTexturizado();
-        esferaLuz = new EsferaLuz2(30,30,1,1);
+        esferaLuz = new Esferatextura(30,30,1,1);
 
         gl.glEnable(gl.GL_NORMALIZE);
 

@@ -1,7 +1,5 @@
 package com.example.myapplication.modelos.gl10;
 
-import android.util.Log;
-
 import com.example.myapplication.utilidades.Funciones;
 
 import java.nio.FloatBuffer;
@@ -9,7 +7,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.opengles.GL10;
 
 
-public class EsferaLuz2 {
+public class Esferatextura {
     private FloatBuffer bufferVertices;
     private FloatBuffer bufferColores;
     private FloatBuffer bufferNormales;
@@ -20,7 +18,7 @@ public class EsferaLuz2 {
     private final static int COMPTEXT = 2;
     private int franjas, cortes;
 
-    public EsferaLuz2(int franjas, int cortes, float radio, float atachamiento){
+    public Esferatextura(int franjas, int cortes, float radio, float atachamiento){
 
         this.franjas = franjas;
         this.cortes = cortes;

@@ -9,9 +9,9 @@ import android.opengl.GLU;
 import android.opengl.GLUtils;
 
 import com.example.myapplication.R;
-import com.example.myapplication.modelos.gl10.AstroTextura;
-import com.example.myapplication.modelos.gl10.EsferaLuz2;
-import com.example.myapplication.modelos.gl10.MarTextura;
+import com.example.myapplication.modelos.gl10.Esferatextura;
+import com.example.myapplication.modelos.gl10.ObjModel;
+import com.example.myapplication.modelos.gl10.PlanoTextura;
 import com.example.myapplication.modelos.gl10.PlanoIluminacion;
 import com.example.myapplication.modelos.gl10.PlanoTexturizado;
 import com.example.myapplication.utilidades.Funciones;
@@ -26,12 +26,13 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
     private float translacion = 0;
     private final static int LUZ0 = GL_LIGHT0;
     private final static int LUZ1 = GL_LIGHT0;
-    private MarTextura plano;
-    private EsferaLuz2 astro;
+    private PlanoTextura plano;
+    private Esferatextura balon;
     private PlanoIluminacion planoIluminacion;
     private PlanoIluminacion planoIluminacion2;
     private PlanoIluminacion planoIluminacion3;
     private PlanoTexturizado planetas;
+    private ObjModel dona;
 
 
     private float incrementodensidadnieblibna = 0.001f;
@@ -71,10 +72,12 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
     }
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        gl.glClearColor(0.07059f, 0.07059f, 0.07059f, 1.0f);
+        gl.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         gl.glEnable(gl.GL_LIGHTING);
         //gl.glEnable(gl.GL_SMOOTH);
         gl.glEnable(GL10.GL_DEPTH_TEST);
+
+        dona = new ObjModel("donaBlender.obj", new float[]{0.902f, 0.0706f, 0.7922f, 1}, this.context);
 
         gl.glEnable(gl.GL_TEXTURE_2D);
 
@@ -90,7 +93,7 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
         gl.glGenTextures(2, arrayTexturas, 0);
 
         Bitmap bitmap2;
-        astro = new EsferaLuz2(30,30,1,1);
+        balon = new Esferatextura(30,30,1,1);
 
         bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.balon);
         gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[0]);
@@ -101,7 +104,7 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
         bitmap2.recycle();
 
         Bitmap bitmap;
-        plano = new MarTextura();
+        plano = new PlanoTextura();
 
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.albion);
         gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[1]);
@@ -132,7 +135,7 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
         gl.glViewport(0, 0, ancho, alto);
         gl.glMatrixMode(gl.GL_PROJECTION);
         gl.glLoadIdentity();
-        gl.glFrustumf(-1.0f, 1, bottom, top, 1.0f, 5000.0f);
+        gl.glFrustumf(-1.0f, 1, bottom, top, 1f, 50.0f);
         gl.glTexEnvf(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, gl.GL_REPLACE);
 
         GLU.gluLookAt(gl,
@@ -227,22 +230,21 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
         //AFECTA A TODA LA ESCENA>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         gl.glScalef(1.0f, 1.0f, 1.0f);
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        gl.glPushMatrix();//Plano1
+        gl.glPushMatrix();//Plano Abajo
         gl.glMaterialfv(gl.GL_FRONT_AND_BACK, gl.GL_AMBIENT,materialBlanco,0); //ambiental todo
         //   gl.glMaterialfv(gl.GL_FRONT_AND_BACK, gl.GL_DIFFUSE,materialVerde,0);
          //  gl.glMaterialfv(gl.GL_FRONT_AND_BACK, gl.GL_SPECULAR,materialVerde,0);
         //   gl.glMaterialf(gl.GL_FRONT_AND_BACK, gl.GL_SHININESS, (float) (60*Math.sin(vIncremento)));
-        // gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorAzul));
+        gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorAzul));
         gl.glLightfv(LUZ1, gl.GL_POSITION, Funciones.generarBuffer(posicion));
         planoIluminacion.dibujar(gl);
         gl.glPopMatrix();
 
         gl.glPushMatrix();//PLANO2 ATRAS
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[1]);
         //Aqui es para hacer un plano normal
 
         //Luz plano
-        //gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorRojo));
+        gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorRojo));
         gl.glLightfv(LUZ1, gl.GL_POSITION, Funciones.generarBuffer(posicion2));
             gl.glRotatef(90, 1, 0, 0);
             //Neblina en plano
@@ -250,12 +252,12 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
             //gl.glEnable(gl.GL_BLEND);
             //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
 
-        //planoIluminacion2.dibujar(gl);
+        planoIluminacion2.dibujar(gl);
 
                 //Aqui es para hacer un planoTextura
                 gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[1]); // Textura para la cara 1
-                gl.glRotatef(90, 1, 0, 0); // Orientar correctamente
-                plano.dibujar(gl); // Dibujar la cara
+                gl.glRotatef(270, 1, 0, 0); // Orientar correctamente
+                //plano.dibujar(gl); // Dibujar la cara
 
         gl.glPopMatrix();
 
@@ -274,10 +276,25 @@ public class RenderFinalBlend implements GLSurfaceView.Renderer {
         gl.glBindTexture(GL10.GL_TEXTURE_2D, arrayTexturas[0]);
         gl.glTranslatef(0f, 0f, 0);
         gl.glScalef(0.5f, 0.5f, 0.5f);
-        gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorAmbient));
+        gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, FloatBuffer.wrap(colorBlanco));
         gl.glLightfv(LUZ1, gl.GL_POSITION, Funciones.generarBuffer(posicionTierra));
-        //    gl.glDisable(gl.GL_BLEND);
-        astro.dibujar(gl);
+        gl.glRotatef(rotacion,0,1,0);
+        //gl.glDisable(gl.GL_BLEND);
+        //gl.glEnable(gl.GL_BLEND);
+        //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
+        //astro.dibujar(gl);
+        gl.glPopMatrix();
+
+        gl.glPushMatrix();
+        {
+            gl.glTranslatef(0, 0f, 0);
+            gl.glScalef(0.3f,0.3f,0.2f);
+            gl.glRotatef(rotacion,1,0,0);
+            //gl.glDisable(gl.GL_BLEND);
+            //gl.glEnable(gl.GL_BLEND);
+            //gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_DST_ALPHA);
+            dona.dibujar(gl);
+        }
         gl.glPopMatrix();
 
         rotacion += 0.9f;

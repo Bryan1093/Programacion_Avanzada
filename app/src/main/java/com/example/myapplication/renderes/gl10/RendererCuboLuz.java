@@ -3,7 +3,7 @@ package com.example.myapplication.renderes.gl10;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 
-import com.example.myapplication.modelos.gl10.EsferaLuz2;
+import com.example.myapplication.modelos.gl10.Esferatextura;
 import com.example.myapplication.utilidades.Funciones;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -12,7 +12,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class RendererCuboLuz implements GLSurfaceView.Renderer {
     private float rotacion = 0;
-    private EsferaLuz2 esferaLuz;
+    private Esferatextura esferaLuz;
     private float traslacion =-5.0f;
 
     private static final int LUZ_O = GL10.GL_LIGHT0;
@@ -25,7 +25,7 @@ public class RendererCuboLuz implements GLSurfaceView.Renderer {
         gl.glEnable(GL10.GL_DEPTH_TEST); // Habilitar Z-buffering
         gl.glDepthFunc(GL10.GL_LEQUAL);  // Establecer la función de comparación para el Z-buffer
 
-        esferaLuz = new EsferaLuz2(30, 30, 1.5f, 1);
+        esferaLuz = new Esferatextura(30, 30, 1.5f, 1);
 
 
         gl.glLightfv(LUZ_O, gl.GL_POSITION, Funciones.generarBuffer(posLuz0));

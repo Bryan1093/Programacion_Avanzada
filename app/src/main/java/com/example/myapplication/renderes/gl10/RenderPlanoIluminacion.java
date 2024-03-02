@@ -5,7 +5,7 @@ import static android.opengl.GLES10.GL_LIGHT0;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 
-import com.example.myapplication.modelos.gl10.EsferaLuz2;
+import com.example.myapplication.modelos.gl10.Esferatextura;
 import com.example.myapplication.modelos.gl10.PlanoIluminacion;
 import com.example.myapplication.utilidades.Funciones;
 
@@ -21,7 +21,7 @@ public class RenderPlanoIluminacion implements GLSurfaceView.Renderer {
     private PlanoIluminacion planoIluminacion;
     private PlanoIluminacion planoIluminacion2;
     private PlanoIluminacion planoIluminacion3;
-    private EsferaLuz2 esferaLuz;
+    private Esferatextura esferaLuz;
     private float translacion = 0;
     private float rotacion = 0;
 
@@ -32,7 +32,7 @@ public class RenderPlanoIluminacion implements GLSurfaceView.Renderer {
         planoIluminacion = new PlanoIluminacion();
         planoIluminacion2 = new PlanoIluminacion();
         planoIluminacion3 = new PlanoIluminacion();
-        esferaLuz = new EsferaLuz2(30,30,1,1);
+        esferaLuz = new Esferatextura(30,30,1,1);
     }
 
     @Override

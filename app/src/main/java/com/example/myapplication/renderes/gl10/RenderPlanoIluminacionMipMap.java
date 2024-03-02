@@ -7,7 +7,7 @@ import static javax.microedition.khronos.opengles.GL10.GL_LIGHT1;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 
-import com.example.myapplication.modelos.gl10.EsferaLuz2;
+import com.example.myapplication.modelos.gl10.Esferatextura;
 import com.example.myapplication.modelos.gl10.PlanoIluminacion;
 import com.example.myapplication.utilidades.Funciones;
 
@@ -23,8 +23,8 @@ public class RenderPlanoIluminacionMipMap implements GLSurfaceView.Renderer {
     private PlanoIluminacion planoIluminacion;
     private PlanoIluminacion planoIluminacion2;
     private PlanoIluminacion planoIluminacion3;
-    private EsferaLuz2 esferaLuz;
-    private EsferaLuz2 esfera;
+    private Esferatextura esferaLuz;
+    private Esferatextura esfera;
     private float translacion = 0;
     private float rotacion = 0;
 
@@ -35,7 +35,7 @@ public class RenderPlanoIluminacionMipMap implements GLSurfaceView.Renderer {
         planoIluminacion = new PlanoIluminacion();
         planoIluminacion2 = new PlanoIluminacion();
         planoIluminacion3 = new PlanoIluminacion();
-        esferaLuz = new EsferaLuz2(30,30,1,1);
+        esferaLuz = new Esferatextura(30,30,1,1);
     }
 
     @Override

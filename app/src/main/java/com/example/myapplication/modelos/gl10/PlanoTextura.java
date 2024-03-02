@@ -7,7 +7,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.opengles.GL10;
 import com.example.myapplication.utilidades.Funciones;
 
-public class MarTextura {
+public class PlanoTextura {
     private FloatBuffer bufferVertices;
     private FloatBuffer bufferColores;
     private FloatBuffer bufferTexturas;//TEXTURA
@@ -20,7 +20,7 @@ public class MarTextura {
 
     //private int numPuntos = Activity_Figuras.numPrimitivas;//input Numero de primitavas
 
-    public MarTextura(){
+    public PlanoTextura(){
 
         float[] vertices ={//TEXTURA
                 1,1,//0

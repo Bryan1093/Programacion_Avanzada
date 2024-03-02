@@ -9,7 +9,7 @@ import android.opengl.GLUtils;
 
 import com.example.myapplication.R;
 import com.example.myapplication.modelos.gl10.CuadradoTextura;
-import com.example.myapplication.modelos.gl10.EsferaLuz2;
+import com.example.myapplication.modelos.gl10.Esferatextura;
 import com.example.myapplication.modelos.gl10.PentagonoTextura;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -18,7 +18,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class RenderEsferaText implements GLSurfaceView.Renderer {
     private float vIncremento;
     private PentagonoTextura pentagonoArriba, pentagonoAbajo;
-    private EsferaLuz2 esfera;
+    private Esferatextura esfera;
     private CuadradoTextura lado1,lado2,lado3,lado4,lado5;
     private int[] arrayTexturas = new int[8];//Se utilizará para almacenar las identificaciones de textura generadas por OpenGL.
     private Context context;
@@ -116,7 +116,7 @@ public class RenderEsferaText implements GLSurfaceView.Renderer {
         bitmap6.recycle();
 
         Bitmap bitmap7;
-        esfera = new EsferaLuz2(30,30,1,1);
+        esfera = new Esferatextura(30,30,1,1);
 
         bitmap7 = BitmapFactory.decodeResource(context.getResources(), R.drawable.balon);
         gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[7]);
